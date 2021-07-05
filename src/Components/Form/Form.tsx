@@ -21,7 +21,7 @@ function Form() {
     }
 
     const handleRadioChange = (e: React.ChangeEvent): void => {
-        
+
         setTransaction(e.target.attributes[2].value)
     }
 
