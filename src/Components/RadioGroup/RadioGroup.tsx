@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { StyledRadio } from './StyledRadio';
 import {FormControl, FormControlLabel} from "@material-ui/core";
 import { MUIRadioGroup } from './MUIRadioGroup';
