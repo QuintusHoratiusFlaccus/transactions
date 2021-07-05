@@ -7,6 +7,9 @@
 
 #ide
 /.idea
+.iws
+workspace.xml
+tasks.xml
 
 # testing
 /coverage
@@ -25,5 +28,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*s
 .js
-
-/.idea/**
