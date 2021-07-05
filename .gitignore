@@ -26,4 +26,4 @@ yarn-debug.log*
 yarn-error.log*s
 .js
 
-/.idea/..
+/.idea/**
