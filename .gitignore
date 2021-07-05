@@ -10,6 +10,14 @@
 .iws
 workspace.xml
 tasks.xml
+ .idea/artifacts
+ .idea/compiler.xml
+ .idea/jarRepositories.xml
+ .idea/modules.xml
+ .idea/*.iml
+ .idea/modules
+ *.iml
+ *.ipr
 
 # testing
 /coverage
@@ -28,3 +36,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*s
 .js
+
