@@ -1,3 +1,3 @@
-import {IDeposit} from "./IDeposit";
+import {DefaultTransactionsInterface} from "./DefaultTransactionsInterface";
 
-export interface IWithdrawal extends IDeposit{}
+export interface IWithdrawal extends DefaultTransactionsInterface{}

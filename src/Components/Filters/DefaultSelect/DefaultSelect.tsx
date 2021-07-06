@@ -2,7 +2,7 @@ import { FormControl, Input, InputLabel, Select } from "@material-ui/core"
 import {getArrayOfOptions} from "./getArrayOfOptions";
 import {IComponentSelect} from "../../../Interfaces/DefaultSelectInterface";
 
-function DefaultSelect({placeholder, base, selectState, handleFilterChange}:IComponentSelect) {
+function DefaultSelect({name, placeholder, base, selectState, handleFilterChange}:IComponentSelect) {
     return (
         <FormControl>
             <InputLabel id="select-label">{placeholder}</InputLabel>
@@ -13,7 +13,7 @@ function DefaultSelect({placeholder, base, selectState, handleFilterChange}:ICom
                 onChange={handleFilterChange}
                 input={<Input />}
                 renderValue={(selected) => (selected as string[]).join(', ')}
-                name={placeholder.toLowerCase()}
+                name={name ?? placeholder.toLowerCase()}
             >
                 {getArrayOfOptions({base, selectState})}
             </Select>

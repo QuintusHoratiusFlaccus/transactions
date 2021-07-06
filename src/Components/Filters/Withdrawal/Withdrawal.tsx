@@ -17,6 +17,8 @@ function Withdrawal({handleFilterChange, filterState}:IWithdrawal) {
             <DefaultSelect
                 placeholder="Lock"
                 base={isLocked}
+                name="isLocked"
+                //@ts-ignore
                 selectState={filterState.isLocked}
                 handleFilterChange={handleFilterChange}
             />

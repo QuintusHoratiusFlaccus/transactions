@@ -1,7 +1,3 @@
-import React from "react";
-import {FilterInterface} from "./FilterInterface";
+import {DefaultTransactionsInterface} from "./DefaultTransactionsInterface";
 
-export interface IDeposit {
-    handleFilterChange(e: React.ChangeEvent<{ value: unknown, name?: string }>): void,
-    filterState: FilterInterface,
-}
+export interface IDeposit extends DefaultTransactionsInterface{}

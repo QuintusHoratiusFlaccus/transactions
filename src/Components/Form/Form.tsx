@@ -3,6 +3,7 @@ import Deposit from "../Filters/Deposit/Deposit";
 import RadioGroup from "../RadioGroup/RadioGroup";
 import {FilterInterface} from "../../Interfaces/FilterInterface";
 import Withdrawal from "../Filters/Withdrawal/Withdrawal";
+import { Button } from "@material-ui/core";
 
 function Form() {
     const [transaction, setTransaction] = useState<string>('deposit')
@@ -13,6 +14,22 @@ function Form() {
         currencies: []
     })
 
+    const clearFilters = (currType: unknown): void => {
+        setFilter(((prevState: FilterInterface): FilterInterface => {
+            const filterMarkup = {
+                status: [],
+                id: '',
+                username: '',
+                currencies: []
+            }
+
+            if (currType === 'deposit') return {...filterMarkup}
+            if (currType === 'withdrawal') return {...filterMarkup, isLocked: []}
+
+            return prevState
+        }))
+    }
+
     const handleFilterChange = (e: React.ChangeEvent<{ value: unknown, name: string }>): void => {
         setFilter((prevState: FilterInterface) => ({
             ...prevState,
@@ -21,30 +38,44 @@ function Form() {
     }
 
     const handleRadioChange = (e: React.ChangeEvent): void => {
+        clearFilters(e.target.attributes[2].value)
 
         setTransaction(e.target.attributes[2].value)
     }
 
+    const handleSubmit = () => {
+        console.log()
+    }
+
     return(
-        <>
+        <form onSubmit={handleSubmit}>
             <RadioGroup
                 transaction={transaction}
                 handleRadioChange={handleRadioChange}
             />
             {
-                transaction === 'deposit' ?
-                    <Deposit
-                        filterState={filter}
-                        handleFilterChange={handleFilterChange}
-                    />
-                    :
+                transaction === 'withdrawal' ?
                     <Withdrawal
                         filterState={filter}
                         handleFilterChange={handleFilterChange}
                     />
+                    :
+                    <Deposit
+                        filterState={filter}
+                        handleFilterChange={handleFilterChange}
+                    />
             }
-
-        </>
+                <Button
+                    onClick={() => clearFilters(transaction)}
+                    variant="contained"
+                    color="primary"
+                >
+                    CLEAR FILTERS
+                </Button>
+                <Button variant="contained" color="primary" type="submit">
+                    REFRESH
+                </Button>
+        </form>
     )
 }
 
