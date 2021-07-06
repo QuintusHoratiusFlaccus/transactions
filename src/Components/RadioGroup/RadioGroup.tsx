@@ -6,8 +6,9 @@ import {IComponentRadio} from "../../Interfaces/RadioInterface";
 
 function RadioGroup({transaction, handleRadioChange}:IComponentRadio) {
 
-    const checkBy = (type: string, color: string) => {
-        return transaction === type ? color : null
+    const checkBy = (type: string, color: string): string => {
+        if (transaction === type) return color
+        return 'primary'
     }
 
     return (
@@ -16,14 +17,14 @@ function RadioGroup({transaction, handleRadioChange}:IComponentRadio) {
                 <FormControlLabel
                     value="deposit"
                     control={
-                        <StyledRadio customColor={checkBy('deposit', 'crimson')}/>
+                        <StyledRadio value="deposit" customColor={checkBy('deposit', 'crimson')}/>
                     }
                     label="Deposit"
                 />
                 <FormControlLabel
                     value="withdrawal"
                     control={
-                        <StyledRadio customColor={checkBy('withdrawal', 'mediumseagreen')}/>
+                        <StyledRadio value="withdrawal" customColor={checkBy('withdrawal', 'mediumseagreen')}/>
                     }
                     label="Withdrawal"
                 />

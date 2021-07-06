@@ -1,7 +1,7 @@
 import DefaultSelect from "../DefaultSelect/DefaultSelect"
 import { TextField } from "@material-ui/core";
 import {currencies} from "../../../Constants/Currencies";
-import {WithdrawalArr} from "../../Statuses/WithdrawalStatus";
+import {WithdrawalArr} from "../../../Statuses/WithdrawalStatus";
 import {isLocked} from "../../../Constants/isLocked";
 import { IWithdrawal } from "../../../Interfaces/IWithdrawal";
 
@@ -18,7 +18,6 @@ function Withdrawal({handleFilterChange, filterState}:IWithdrawal) {
                 placeholder="Lock"
                 base={isLocked}
                 name="isLocked"
-                //@ts-ignore
                 selectState={filterState.isLocked}
                 handleFilterChange={handleFilterChange}
             />

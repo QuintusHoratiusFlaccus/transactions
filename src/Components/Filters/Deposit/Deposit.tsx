@@ -1,10 +1,10 @@
 import DefaultSelect from "../DefaultSelect/DefaultSelect"
-import {DepositArr} from "../../Statuses/DepositStatus";
+import {DepositArr} from "../../../Statuses/DepositStatus";
 import {IDeposit} from "../../../Interfaces/IDeposit";
 import { TextField } from "@material-ui/core";
 import {currencies} from "../../../Constants/Currencies";
 
-function Deposit({handleFilterChange, filterState}:IDeposit) {
+function Deposit({handleFilterChange, filterState}:IDepsosit) {
     return (
         <>
             <DefaultSelect

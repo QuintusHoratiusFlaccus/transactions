@@ -1,14 +1,14 @@
-interface defaultInterface {
+interface basicInterface {
     status: Array<string>,
     id: string,
     username: string,
     currencies: Array<string>
 }
 
-interface IDeposit extends defaultInterface{}
+export interface Deposit extends basicInterface{}
 
-interface IWithdrawal extends defaultInterface{
+export interface Withdrawal extends basicInterface{
     isLocked: Array<string>,
 }
 
-export type FilterInterface = IDeposit | IWithdrawal
+export type FilterInterface = Deposit | Withdrawal

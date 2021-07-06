@@ -1,0 +1,1 @@
+export type transactionType = 'deposit' | 'withdrawal'
