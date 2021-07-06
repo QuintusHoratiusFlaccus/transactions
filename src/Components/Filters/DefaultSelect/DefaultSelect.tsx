@@ -13,7 +13,7 @@ function DefaultSelect({name, placeholder, base, selectState, handleFilterChange
                 onChange={handleFilterChange}
                 input={<Input />}
                 renderValue={(selected) => (selected as string[]).join(', ')}
-                name={name ?? placeholder.toLowerCase()}
+                name={name}
             >
                 {getArrayOfOptions({base, selectState})}
             </Select>

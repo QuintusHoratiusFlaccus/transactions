@@ -11,6 +11,7 @@ function Withdrawal({handleFilterChange, filterState}:IWithdrawal) {
             <DefaultSelect
                 placeholder="Status"
                 base={WithdrawalArr}
+                name="status"
                 selectState={filterState.status}
                 handleFilterChange={handleFilterChange}
             />
@@ -37,6 +38,7 @@ function Withdrawal({handleFilterChange, filterState}:IWithdrawal) {
             <DefaultSelect
                 placeholder="Currencies"
                 base={currencies}
+                name="currencies"
                 selectState={filterState.currencies}
                 handleFilterChange={handleFilterChange}
             />

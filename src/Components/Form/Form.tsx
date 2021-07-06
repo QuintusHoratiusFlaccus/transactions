@@ -4,6 +4,7 @@ import RadioGroup from "../RadioGroup/RadioGroup";
 import {FilterInterface} from "../../Interfaces/FilterInterface";
 import Withdrawal from "../Filters/Withdrawal/Withdrawal";
 import { Button } from "@material-ui/core";
+import {HandleFilterChange} from "../../Interfaces/HandleFilterChange";
 
 function Form() {
     const [transaction, setTransaction] = useState<string>('deposit')
@@ -30,7 +31,7 @@ function Form() {
         }))
     }
 
-    const handleFilterChange = (e: React.ChangeEvent<{ value: unknown, name: string }>): void => {
+    const handleFilterChange = (e: HandleFilterChange): void => {
         setFilter((prevState: FilterInterface) => ({
             ...prevState,
             [e.target.name]: e.target.value

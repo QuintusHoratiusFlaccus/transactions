@@ -10,6 +10,7 @@ function Deposit({handleFilterChange, filterState}:IDeposit) {
             <DefaultSelect
                 placeholder="Status"
                 base={DepositArr}
+                name="status"
                 selectState={filterState.status}
                 handleFilterChange={handleFilterChange}
             />
@@ -28,6 +29,7 @@ function Deposit({handleFilterChange, filterState}:IDeposit) {
             <DefaultSelect
                 placeholder="Currencies"
                 base={currencies}
+                name="currencies"
                 selectState={filterState.currencies}
                 handleFilterChange={handleFilterChange}
             />

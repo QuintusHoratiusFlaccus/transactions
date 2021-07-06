@@ -1,7 +1,7 @@
-import React from "react";
 import {FilterInterface} from "./FilterInterface";
+import {HandleFilterChange} from "./HandleFilterChange";
 
 export interface DefaultTransactionsInterface {
-    handleFilterChange(e: React.ChangeEvent<{ value: unknown, name?: string }>): void,
+    handleFilterChange(e: HandleFilterChange): void,
     filterState: FilterInterface,
 }
