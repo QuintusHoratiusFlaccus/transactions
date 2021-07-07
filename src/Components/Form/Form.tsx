@@ -1,12 +1,14 @@
 import React, {ReactElement, useState} from "react";
 // import Deposit from "../Filters/Deposit/Deposit";
 import RadioGroup from "../RadioGroup/RadioGroup";
-import {FilterInterface} from "../../Interfaces/FilterInterface";
+import {FilterInterface, Withdrawal as TypeWithdrawal, Deposit as TypeDeposit} from "../../Interfaces/FilterInterface";
 // import Withdrawal from "../Filters/Withdrawal/Withdrawal";
 import { Button } from "@material-ui/core";
 import { TransactionType } from "../../Interfaces/Types";
 import {HandleRadioChange} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
+import {api} from "../../Services/api";
+import {toDepositReqType} from "../../Functions/changeToReqType";
 
 const Form = (): ReactElement => {
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
@@ -15,12 +17,13 @@ const Form = (): ReactElement => {
                 status: [],
                 id: '',
                 username: '',
-                currencies: []
-            }
+                currency: []
+            } as TypeDeposit
 
-            if (transaction === 'withdrawal') return {...filterMarkup, isLocked: []}
+            if (transaction === 'withdrawal') return {...filterMarkup, isLocked: []} as TypeWithdrawal
             return {...filterMarkup}
     }
+    //TODO it's be okay?
     const [filter, setFilter] = useState<FilterInterface>(generateDefaultState())
 
     const clearFilters = (currType: TransactionType): void => {
@@ -29,7 +32,7 @@ const Form = (): ReactElement => {
                 status: [],
                 id: '',
                 username: '',
-                currencies: []
+                currency: []
             }
 
             console.log()
@@ -40,7 +43,7 @@ const Form = (): ReactElement => {
         }))
     }
 
-    //mustuppdate
+    //TODO change function props
     const handleFilterChange = (e: React.ChangeEvent<{ value: unknown, name: string }>): void => {
         setFilter((prevState: FilterInterface) => ({
             ...prevState,
@@ -53,8 +56,18 @@ const Form = (): ReactElement => {
         setTransaction(e.target.value as TransactionType)
     }
 
-    const handleSubmit = () => {
-        console.log()
+    const handleSubmit = async (e: any) => {
+        e.preventDefault()
+
+        let resp
+        if (transaction === 'deposit') {
+            resp = await api.getDeposits(toDepositReqType({...filter}))
+        }
+        if (transaction === 'withdrawal') {
+            console.log('ha')
+        }
+
+        console.log(resp)
     }
 
     return(
@@ -73,7 +86,7 @@ const Form = (): ReactElement => {
             {/*        <Deposit*/}
             {/*            filterState={filter as TypeDeposit}*/}
             {/*            handleFilterChange={handleFilterChange}*/}
-            {/*        />*/}
+            {/*            TODO does it right solution?        />*/}
             {/*}*/}
             <Payments
                 filterState={filter}

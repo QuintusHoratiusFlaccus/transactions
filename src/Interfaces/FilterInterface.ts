@@ -3,7 +3,7 @@ import {WithdrawalStatus} from "../Statuses/WithdrawalStatus";
 import {Currencies} from "../Constants/Currencies";
 import {IsLocked} from "../Constants/isLocked";
 
-//mustuppdate
+//TODO
 // type Status = string[] & (DepositStatus | WithdrawalStatus) | []
 
 //2! unlike to currencies
@@ -11,7 +11,7 @@ interface basicInterface {
     status: string[],
     id: string,
     username: string,
-    currencies: Currencies | string[]
+    currency: Currencies | string[]
 }
 
 export interface Deposit extends basicInterface{}

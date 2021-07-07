@@ -37,7 +37,7 @@ const Withdrawal = ({handleFilterChange, filterState}:IWithdrawal): ReactElement
             <DefaultSelect
                 placeholder="Currencies"
                 base={currencies}
-                selectState={filterState.currencies}
+                selectState={filterState.currency}
                 handleFilterChange={handleFilterChange}
             />
         </>
