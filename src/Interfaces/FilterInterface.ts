@@ -1,14 +1,24 @@
+import {DepositStatus} from "../Statuses/DepositStatus";
+import {WithdrawalStatus} from "../Statuses/WithdrawalStatus";
+import {Currencies} from "../Constants/Currencies";
+import {IsLocked} from "../Constants/isLocked";
+
+//mustuppdate
+// type Status = string[] & (DepositStatus | WithdrawalStatus) | []
+
+//2! unlike to currencies
 interface basicInterface {
-    status: Array<string>,
+    status: string[],
     id: string,
     username: string,
-    currencies: Array<string>
+    currencies: Currencies | string[]
 }
 
 export interface Deposit extends basicInterface{}
 
+//1! error is missed when empty array is given like alternative type
 export interface Withdrawal extends basicInterface{
-    isLocked: Array<string>,
+    isLocked: IsLocked | [],
 }
 
 export type FilterInterface = Deposit | Withdrawal

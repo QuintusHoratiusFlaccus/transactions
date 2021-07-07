@@ -1,4 +1,3 @@
-import {IDeposit} from "./IDeposit";
 import {DefaultTransactionsInterface} from "./DefaultTransactionsInterface";
 
 export interface IComponentSelect extends DefaultTransactionsInterface {

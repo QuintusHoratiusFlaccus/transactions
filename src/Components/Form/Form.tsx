@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import Deposit from "../Filters/Deposit/Deposit";
 import RadioGroup from "../RadioGroup/RadioGroup";
-import {FilterInterface} from "../../Interfaces/FilterInterface";
+import {FilterInterface, Deposit as TypeDeposit, Withdrawal as TypeWithdrawal} from "../../Interfaces/FilterInterface";
 import Withdrawal from "../Filters/Withdrawal/Withdrawal";
 import { Button } from "@material-ui/core";
 import { transactionType } from "../../Interfaces/Types";
-import {handleRadioChange} from "../../Interfaces/RadioInterface";
+import {HandleRadioChange} from "../../Interfaces/RadioInterface";
 
 function Form() {
     const [transaction, setTransaction] = useState<transactionType>('deposit')
@@ -25,6 +25,7 @@ function Form() {
                 currencies: []
             }
 
+            console.log()
             if (currType === 'deposit') return {...filterMarkup}
             if (currType === 'withdrawal') return {...filterMarkup, isLocked: []}
 
@@ -32,6 +33,7 @@ function Form() {
         }))
     }
 
+    //mustuppdate
     const handleFilterChange = (e: React.ChangeEvent<{ value: unknown, name: string }>): void => {
         setFilter((prevState: FilterInterface) => ({
             ...prevState,
@@ -39,7 +41,7 @@ function Form() {
         }))
     }
 
-    const handleRadioChange = (e: handleRadioChange): void => {
+    const handleRadioChange = (e: HandleRadioChange): void => {
         clearFilters(e.target.value as transactionType)
         setTransaction(e.target.value as transactionType)
     }
@@ -57,12 +59,12 @@ function Form() {
             {
                 transaction === 'withdrawal' ?
                     <Withdrawal
-                        filterState={filter}
+                        filterState={filter as TypeWithdrawal}
                         handleFilterChange={handleFilterChange}
                     />
                     :
                     <Deposit
-                        filterState={filter}
+                        filterState={filter as TypeDeposit}
                         handleFilterChange={handleFilterChange}
                     />
             }

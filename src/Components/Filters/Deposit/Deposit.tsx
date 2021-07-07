@@ -4,7 +4,7 @@ import {IDeposit} from "../../../Interfaces/IDeposit";
 import { TextField } from "@material-ui/core";
 import {currencies} from "../../../Constants/Currencies";
 
-function Deposit({handleFilterChange, filterState}:IDepsosit) {
+function Deposit({handleFilterChange, filterState}:IDeposit) {
     return (
         <>
             <DefaultSelect
