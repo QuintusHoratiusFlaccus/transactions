@@ -1,8 +1,9 @@
 import { FormControl, Input, InputLabel, Select } from "@material-ui/core"
 import {getArrayOfOptions} from "./getArrayOfOptions";
 import {IComponentSelect} from "../../../Interfaces/DefaultSelectInterface";
+import {ReactElement} from "react";
 
-function DefaultSelect({name, placeholder, base, selectState, handleFilterChange}:IComponentSelect) {
+const DefaultSelect = ({name, placeholder, base, selectState, handleFilterChange}:IComponentSelect): ReactElement => {
     return (
         <FormControl>
             <InputLabel id="select-label">{placeholder}</InputLabel>

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import { StyledRadio } from './StyledRadio';
 import {FormControl, FormControlLabel} from "@material-ui/core";
 import { MUIRadioGroup } from './MUIRadioGroup';
 import {IComponentRadio} from "../../Interfaces/RadioInterface";
 
-function RadioGroup({transaction, handleRadioChange}:IComponentRadio) {
+const RadioGroup = ({transaction, handleRadioChange}:IComponentRadio): ReactElement => {
 
     const checkBy = (type: string, color: string): string => {
         if (transaction === type) return color

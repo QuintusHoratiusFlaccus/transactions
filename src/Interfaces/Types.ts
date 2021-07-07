@@ -1,1 +1,1 @@
-export type transactionType = 'deposit' | 'withdrawal'
+export type TransactionType = 'deposit' | 'withdrawal'
