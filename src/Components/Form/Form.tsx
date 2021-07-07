@@ -1,22 +1,29 @@
-import React, {useState} from "react";
-import Deposit from "../Filters/Deposit/Deposit";
+import React, {ReactElement, useState} from "react";
+// import Deposit from "../Filters/Deposit/Deposit";
 import RadioGroup from "../RadioGroup/RadioGroup";
-import {FilterInterface, Deposit as TypeDeposit, Withdrawal as TypeWithdrawal} from "../../Interfaces/FilterInterface";
-import Withdrawal from "../Filters/Withdrawal/Withdrawal";
+import {FilterInterface} from "../../Interfaces/FilterInterface";
+// import Withdrawal from "../Filters/Withdrawal/Withdrawal";
 import { Button } from "@material-ui/core";
-import { transactionType } from "../../Interfaces/Types";
+import { TransactionType } from "../../Interfaces/Types";
 import {HandleRadioChange} from "../../Interfaces/RadioInterface";
+import Payments from "../Filters/Payments/Payments";
 
-function Form() {
-    const [transaction, setTransaction] = useState<transactionType>('deposit')
-    const [filter, setFilter] = useState<FilterInterface>({
-        status: [],
-        id: '',
-        username: '',
-        currencies: []
-    })
+const Form = (): ReactElement => {
+    const [transaction, setTransaction] = useState<TransactionType>('deposit')
+    const generateDefaultState = (): FilterInterface => {
+            const filterMarkup = {
+                status: [],
+                id: '',
+                username: '',
+                currencies: []
+            }
 
-    const clearFilters = (currType: transactionType): void => {
+            if (transaction === 'withdrawal') return {...filterMarkup, isLocked: []}
+            return {...filterMarkup}
+    }
+    const [filter, setFilter] = useState<FilterInterface>(generateDefaultState())
+
+    const clearFilters = (currType: TransactionType): void => {
         setFilter(((prevState: FilterInterface): FilterInterface => {
             const filterMarkup = {
                 status: [],
@@ -42,8 +49,8 @@ function Form() {
     }
 
     const handleRadioChange = (e: HandleRadioChange): void => {
-        clearFilters(e.target.value as transactionType)
-        setTransaction(e.target.value as transactionType)
+        clearFilters(e.target.value as TransactionType)
+        setTransaction(e.target.value as TransactionType)
     }
 
     const handleSubmit = () => {
@@ -56,18 +63,23 @@ function Form() {
                 transaction={transaction}
                 handleRadioChange={handleRadioChange}
             />
-            {
-                transaction === 'withdrawal' ?
-                    <Withdrawal
-                        filterState={filter as TypeWithdrawal}
-                        handleFilterChange={handleFilterChange}
-                    />
-                    :
-                    <Deposit
-                        filterState={filter as TypeDeposit}
-                        handleFilterChange={handleFilterChange}
-                    />
-            }
+            {/*{*/}
+            {/*    transaction === 'withdrawal' ?*/}
+            {/*        <Withdrawal*/}
+            {/*            filterState={filter as TypeWithdrawal}*/}
+            {/*            handleFilterChange={handleFilterChange}*/}
+            {/*        />*/}
+            {/*        :*/}
+            {/*        <Deposit*/}
+            {/*            filterState={filter as TypeDeposit}*/}
+            {/*            handleFilterChange={handleFilterChange}*/}
+            {/*        />*/}
+            {/*}*/}
+            <Payments
+                filterState={filter}
+                handleFilterChange={handleFilterChange}
+                transaction={transaction}
+            />
                 <Button
                     onClick={() => clearFilters(transaction)}
                     variant="contained"

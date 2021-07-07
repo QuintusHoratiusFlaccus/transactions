@@ -18,7 +18,7 @@ export interface Deposit extends basicInterface{}
 
 //1! error is missed when empty array is given like alternative type
 export interface Withdrawal extends basicInterface{
-    isLocked: IsLocked | [],
+    isLocked: IsLocked | string[],
 }
 
 export type FilterInterface = Deposit | Withdrawal

@@ -2,6 +2,6 @@
 //export const currencies = ["USD", "EUR", "INR"] as const
 // export type Currencies = typeof currencies
 
-export const currencies = ["USD", "EUR", "INR"]
+export const currencies: Currencies = ["USD", "EUR", "INR"]
 
 export type Currencies = ["USD", "EUR", "INR"]
