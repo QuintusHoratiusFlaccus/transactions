@@ -3,12 +3,15 @@ import RadioGroup from "../RadioGroup/RadioGroup";
 import {FilterInterface} from "../../Interfaces/FilterInterface";
 import { Button } from "@material-ui/core";
 import { TransactionType } from "../../Interfaces/Types";
-import {HandleRadioChange} from "../../Interfaces/RadioInterface";
+import {RadioChangeEvent} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
 import {api} from "../../Services/api";
 import {toDepositReqType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
 import { FilterChangeEvent } from "../../Interfaces/DefaultTransactionsInterface";
+import {currencies} from "../../Constants/Currencies";
+import {UsernameResponse} from "../../Interfaces/apiTypes";
+import {DepositStatus} from "../../Statuses/DepositStatus";
 
 const Form = (): ReactElement => {
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
@@ -37,23 +40,31 @@ const Form = (): ReactElement => {
         }))
     }
 
-    const handleRadioChange = (e: HandleRadioChange): void => {
+    const handleRadioChange = (e: RadioChangeEvent): void => {
         clearFilters(e.target.value as TransactionType)
         setTransaction(e.target.value as TransactionType)
     }
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
-        //
-        // let resp
-        // if (transaction === 'deposit') {
-        //     resp = await api.getDeposits(toDepositReqType({...filter}))
-        // }
-        // if (transaction === 'withdrawal') {
-        //     console.log('ha')
-        // }
-        //
-        // console.log(resp)
+
+        let resp
+        if (transaction === 'deposit') {
+            let {data} = await api.getIdByUsername(filter.username)
+            resp = await api.getDeposits(toDepositReqType(
+                {
+                    status: filter.status as DepositStatus[],
+                    id: filter.id,
+                    playerId: data[0].id,
+                    currency: filter.currency
+                }
+            ))
+        }
+        if (transaction === 'withdrawal') {
+            console.log('ha')
+        }
+
+        console.log(resp)
     }
 
     return(

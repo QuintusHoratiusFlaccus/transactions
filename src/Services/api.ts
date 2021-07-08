@@ -1,21 +1,24 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {DepositFilter} from "../Interfaces/FilterInterface";
+import {GetDepositParams, UsernameResponse} from "../Interfaces/apiTypes";
 
-interface DepositReq extends Omit<DepositFilter, 'username'>{
-    playerId: string,
-}
+// interface DepositReq extends Omit<DepositFilter, 'username'>{
+//     playerId: string,
+// }
+//
+// interface WithdrawalReq {
+//
+// }
 
-interface WithdrawalReq {
-
-}
-
-
-export const api: object = {
-    getDeposits: (data: DepositReq) => axios.get(
-        `http://localhost:3001/DEPOSITS`,
+export const api = {
+    getDeposits: (data: string): Promise<{}> => axios.get(
+        `http://localhost:3001/DEPOSITS${data}`
+    ),
+    getIdByUsername: (username: string): UsernameResponse => axios.get(
+        `http://localhost:3001/USERS`,
         {
             params: {
-                ...data
+                username
             }
         }
     )
