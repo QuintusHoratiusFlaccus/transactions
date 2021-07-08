@@ -1,14 +1,21 @@
-interface defaultInterface {
-    status: Array<string>,
+import {DepositStatus} from "../Statuses/DepositStatus";
+import {WithdrawalStatus} from "../Statuses/WithdrawalStatus";
+import {Currencies} from "../Constants/Currencies";
+import {IsLocked} from "../Constants/isLocked";
+
+interface BasicFilterInterface {
     id: string,
     username: string,
-    currencies: Array<string>
+    currency: Currencies
 }
 
-interface IDeposit extends defaultInterface{}
-
-interface IWithdrawal extends defaultInterface{
-    isLocked: Array<string>,
+export interface DepositFilter extends BasicFilterInterface{
+    status: DepositStatus[]
 }
 
-export type FilterInterface = IDeposit | IWithdrawal
+export interface WithdrawalFilter extends BasicFilterInterface{
+    status: WithdrawalStatus[]
+    isLocked: IsLocked
+}
+
+export type FilterInterface = DepositFilter | WithdrawalFilter

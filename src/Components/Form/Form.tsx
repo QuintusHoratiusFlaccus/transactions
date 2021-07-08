@@ -1,26 +1,26 @@
-import React, {useState} from "react";
-import Deposit from "../Filters/Deposit/Deposit";
+import React, {ReactElement, SyntheticEvent, useState} from "react";
 import RadioGroup from "../RadioGroup/RadioGroup";
 import {FilterInterface} from "../../Interfaces/FilterInterface";
-import Withdrawal from "../Filters/Withdrawal/Withdrawal";
 import { Button } from "@material-ui/core";
+import { TransactionType } from "../../Interfaces/Types";
+import {HandleRadioChange} from "../../Interfaces/RadioInterface";
+import Payments from "../Filters/Payments/Payments";
+import {api} from "../../Services/api";
+import {toDepositReqType} from "../../Functions/changeToReqType";
+import {generateDefaultState} from "../../Functions/generateDefaultState";
+import { FilterChangeEvent } from "../../Interfaces/DefaultTransactionsInterface";
 
-function Form() {
-    const [transaction, setTransaction] = useState<string>('deposit')
-    const [filter, setFilter] = useState<FilterInterface>({
-        status: [],
-        id: '',
-        username: '',
-        currencies: []
-    })
+const Form = (): ReactElement => {
+    const [transaction, setTransaction] = useState<TransactionType>('deposit')
+    const [filter, setFilter] = useState<FilterInterface>(generateDefaultState(transaction))
 
-    const clearFilters = (currType: unknown): void => {
+    const clearFilters = (currType: TransactionType): void => {
         setFilter(((prevState: FilterInterface): FilterInterface => {
-            const filterMarkup = {
+            const filterMarkup: FilterInterface = {
                 status: [],
                 id: '',
                 username: '',
-                currencies: []
+                currency: []
             }
 
             if (currType === 'deposit') return {...filterMarkup}
@@ -30,21 +30,30 @@ function Form() {
         }))
     }
 
-    const handleFilterChange = (e: React.ChangeEvent<{ value: unknown, name: string }>): void => {
+    const handleFilterChange = (e: FilterChangeEvent): void => {
         setFilter((prevState: FilterInterface) => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
     }
 
-    const handleRadioChange = (e: React.ChangeEvent): void => {
-        clearFilters(e.target.attributes[2].value)
-
-        setTransaction(e.target.attributes[2].value)
+    const handleRadioChange = (e: HandleRadioChange): void => {
+        clearFilters(e.target.value as TransactionType)
+        setTransaction(e.target.value as TransactionType)
     }
 
-    const handleSubmit = () => {
-        console.log()
+    const handleSubmit = async (e: SyntheticEvent) => {
+        e.preventDefault()
+        //
+        // let resp
+        // if (transaction === 'deposit') {
+        //     resp = await api.getDeposits(toDepositReqType({...filter}))
+        // }
+        // if (transaction === 'withdrawal') {
+        //     console.log('ha')
+        // }
+        //
+        // console.log(resp)
     }
 
     return(
@@ -53,18 +62,11 @@ function Form() {
                 transaction={transaction}
                 handleRadioChange={handleRadioChange}
             />
-            {
-                transaction === 'withdrawal' ?
-                    <Withdrawal
-                        filterState={filter}
-                        handleFilterChange={handleFilterChange}
-                    />
-                    :
-                    <Deposit
-                        filterState={filter}
-                        handleFilterChange={handleFilterChange}
-                    />
-            }
+            <Payments
+                filterState={filter}
+                handleFilterChange={handleFilterChange}
+                transaction={transaction}
+            />
                 <Button
                     onClick={() => clearFilters(transaction)}
                     variant="contained"

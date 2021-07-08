@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import Form from './Components/Form/Form';
 import { StyledApp } from './StyledApp';
 
-function App() {
+const App = (): ReactElement => {
   return (
     <StyledApp>
         <Form/>

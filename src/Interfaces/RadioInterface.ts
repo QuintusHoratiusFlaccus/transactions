@@ -1,10 +1,12 @@
 import React from "react";
 
+export type HandleRadioChange = React.ChangeEvent<HTMLInputElement>
+
 export interface RadioInterface {
-    customColor?: string | null,
+    customColor: string,
 }
 
 export interface IComponentRadio {
     transaction: string,
-    handleRadioChange(e: React.ChangeEvent): void
+    handleRadioChange(e: HandleRadioChange): void
 }
