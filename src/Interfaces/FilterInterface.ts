@@ -3,22 +3,19 @@ import {WithdrawalStatus} from "../Statuses/WithdrawalStatus";
 import {Currencies} from "../Constants/Currencies";
 import {IsLocked} from "../Constants/isLocked";
 
-//TODO
-// type Status = string[] & (DepositStatus | WithdrawalStatus) | []
-
-//2! unlike to currencies
-interface basicInterface {
-    status: string[],
+interface BasicFilterInterface {
     id: string,
     username: string,
-    currency: Currencies | string[]
+    currency: Currencies
 }
 
-export interface Deposit extends basicInterface{}
-
-//1! error is missed when empty array is given like alternative type
-export interface Withdrawal extends basicInterface{
-    isLocked: IsLocked | string[],
+export interface DepositFilter extends BasicFilterInterface{
+    status: DepositStatus[]
 }
 
-export type FilterInterface = Deposit | Withdrawal
+export interface WithdrawalFilter extends BasicFilterInterface{
+    status: WithdrawalStatus[]
+    isLocked: IsLocked
+}
+
+export type FilterInterface = DepositFilter | WithdrawalFilter

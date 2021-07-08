@@ -6,13 +6,12 @@ import {DepositArr} from "../../../Statuses/DepositStatus";
 import {isLocked} from "../../../Constants/isLocked";
 import {IPayments} from "../../../Interfaces/Payments";
 import {ReactElement} from "react";
-import { Withdrawal } from "../../../Interfaces/FilterInterface";
+import { WithdrawalFilter } from "../../../Interfaces/FilterInterface";
+import { SituationalValue } from "../../../Interfaces/Types";
 
 const Payments = ({handleFilterChange, filterState, transaction}:IPayments): ReactElement => {
-    //TODO
-    type SituationalValue = ReactElement | string[] | null
     const checkTransactionType = <T extends SituationalValue>(depositValue: T, withdrawalValue: T): T => {
-        if (transaction === 'withdrawal') return withdrawalValue
+        if (filterState.hasOwnProperty('isLocked')) return withdrawalValue
         return depositValue
     }
 
@@ -25,11 +24,11 @@ const Payments = ({handleFilterChange, filterState, transaction}:IPayments): Rea
                 handleFilterChange={handleFilterChange}
             />
             {
-                checkTransactionType(null , <DefaultSelect
+                checkTransactionType(<></> , <DefaultSelect
                     placeholder="Lock"
                     base={isLocked}
                     name="isLocked"
-                    selectState={(filterState as Withdrawal).isLocked}//TODO
+                    selectState={(filterState as WithdrawalFilter).isLocked}
                     handleFilterChange={handleFilterChange}
                 />)
             }

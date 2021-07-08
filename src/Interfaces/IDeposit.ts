@@ -1,6 +1,6 @@
 import {DefaultTransactionsInterface} from "./DefaultTransactionsInterface";
-import {Deposit} from "./FilterInterface";
+import {DepositFilter} from "./FilterInterface";
 
 export interface IDeposit extends DefaultTransactionsInterface {
-    filterState: Deposit
+    filterState: DepositFilter
 }

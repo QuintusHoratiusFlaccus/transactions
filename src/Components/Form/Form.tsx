@@ -1,41 +1,28 @@
-import React, {ReactElement, useState} from "react";
-// import Deposit from "../Filters/Deposit/Deposit";
+import React, {ReactElement, SyntheticEvent, useState} from "react";
 import RadioGroup from "../RadioGroup/RadioGroup";
-import {FilterInterface, Withdrawal as TypeWithdrawal, Deposit as TypeDeposit} from "../../Interfaces/FilterInterface";
-// import Withdrawal from "../Filters/Withdrawal/Withdrawal";
+import {FilterInterface} from "../../Interfaces/FilterInterface";
 import { Button } from "@material-ui/core";
 import { TransactionType } from "../../Interfaces/Types";
 import {HandleRadioChange} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
 import {api} from "../../Services/api";
 import {toDepositReqType} from "../../Functions/changeToReqType";
+import {generateDefaultState} from "../../Functions/generateDefaultState";
+import { FilterChangeEvent } from "../../Interfaces/DefaultTransactionsInterface";
 
 const Form = (): ReactElement => {
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
-    const generateDefaultState = (): FilterInterface => {
-            const filterMarkup = {
-                status: [],
-                id: '',
-                username: '',
-                currency: []
-            } as TypeDeposit
-
-            if (transaction === 'withdrawal') return {...filterMarkup, isLocked: []} as TypeWithdrawal
-            return {...filterMarkup}
-    }
-    //TODO it's be okay?
-    const [filter, setFilter] = useState<FilterInterface>(generateDefaultState())
+    const [filter, setFilter] = useState<FilterInterface>(generateDefaultState(transaction))
 
     const clearFilters = (currType: TransactionType): void => {
         setFilter(((prevState: FilterInterface): FilterInterface => {
-            const filterMarkup = {
+            const filterMarkup: FilterInterface = {
                 status: [],
                 id: '',
                 username: '',
                 currency: []
             }
 
-            console.log()
             if (currType === 'deposit') return {...filterMarkup}
             if (currType === 'withdrawal') return {...filterMarkup, isLocked: []}
 
@@ -43,8 +30,7 @@ const Form = (): ReactElement => {
         }))
     }
 
-    //TODO change function props
-    const handleFilterChange = (e: React.ChangeEvent<{ value: unknown, name: string }>): void => {
+    const handleFilterChange = (e: FilterChangeEvent): void => {
         setFilter((prevState: FilterInterface) => ({
             ...prevState,
             [e.target.name]: e.target.value
@@ -56,18 +42,18 @@ const Form = (): ReactElement => {
         setTransaction(e.target.value as TransactionType)
     }
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
-
-        let resp
-        if (transaction === 'deposit') {
-            resp = await api.getDeposits(toDepositReqType({...filter}))
-        }
-        if (transaction === 'withdrawal') {
-            console.log('ha')
-        }
-
-        console.log(resp)
+        //
+        // let resp
+        // if (transaction === 'deposit') {
+        //     resp = await api.getDeposits(toDepositReqType({...filter}))
+        // }
+        // if (transaction === 'withdrawal') {
+        //     console.log('ha')
+        // }
+        //
+        // console.log(resp)
     }
 
     return(
@@ -76,18 +62,6 @@ const Form = (): ReactElement => {
                 transaction={transaction}
                 handleRadioChange={handleRadioChange}
             />
-            {/*{*/}
-            {/*    transaction === 'withdrawal' ?*/}
-            {/*        <Withdrawal*/}
-            {/*            filterState={filter as TypeWithdrawal}*/}
-            {/*            handleFilterChange={handleFilterChange}*/}
-            {/*        />*/}
-            {/*        :*/}
-            {/*        <Deposit*/}
-            {/*            filterState={filter as TypeDeposit}*/}
-            {/*            handleFilterChange={handleFilterChange}*/}
-            {/*            TODO does it right solution?        />*/}
-            {/*}*/}
             <Payments
                 filterState={filter}
                 handleFilterChange={handleFilterChange}
