@@ -7,4 +7,4 @@ export enum DepositStatus {
     Declined = 'DECLINED'
 }
 
-export const DepositArr = Object.keys(DepositStatus)
+export const DepositStatusValues = Object.values(DepositStatus)

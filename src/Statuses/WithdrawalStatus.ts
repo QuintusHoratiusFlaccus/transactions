@@ -9,4 +9,4 @@ export enum WithdrawalStatus {
     Confirmed = 'CONFIRMED'
 }
 
-export const WithdrawalArr = Object.keys(WithdrawalStatus)
+export const WithdrawalStatusValues = Object.values(WithdrawalStatus)

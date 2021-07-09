@@ -3,7 +3,7 @@ import {getArrayOfOptions} from "./getArrayOfOptions";
 import {IComponentSelect} from "../../../Interfaces/DefaultSelectInterface";
 import {ReactElement} from "react";
 
-const DefaultSelect = ({name, placeholder, base, selectState, handleFilterChange}:IComponentSelect): ReactElement => {
+const DefaultSelect = ({name, placeholder, base, selectState, handleFilterChange, capital = false}:IComponentSelect): ReactElement => {
     return (
         <FormControl>
             <InputLabel id="select-label">{placeholder}</InputLabel>
@@ -16,7 +16,7 @@ const DefaultSelect = ({name, placeholder, base, selectState, handleFilterChange
                 renderValue={(selected) => (selected as string[]).join(', ')}
                 name={name ?? placeholder.toLowerCase()}
             >
-                {getArrayOfOptions({base, selectState})}
+                {getArrayOfOptions({base, selectState, capital})}
             </Select>
         </FormControl>
     )

@@ -1,8 +1,6 @@
-import {RadioGroup, withStyles} from "@material-ui/core";
-import {ReactElement} from "react";
+import {RadioGroup} from "@material-ui/core";
+import styled from "styled-components";
 
-export const MUIRadioGroup = withStyles({
-    root: {
-        flexDirection: 'row'
-    }
-})(RadioGroup)
+export const MUIRadioGroup = styled(RadioGroup)`
+  flex-direction: row
+`

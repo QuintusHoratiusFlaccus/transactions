@@ -1,36 +1,26 @@
 import React, {ReactElement, SyntheticEvent, useState} from "react";
 import RadioGroup from "../RadioGroup/RadioGroup";
-import {FilterInterface} from "../../Interfaces/FilterInterface";
-import { Button } from "@material-ui/core";
-import { TransactionType } from "../../Interfaces/Types";
+import {FilterInterface, WithdrawalFilter} from "../../Interfaces/FilterInterface";
+import {Button} from "@material-ui/core";
+import {TransactionType} from "../../Interfaces/Types";
 import {RadioChangeEvent} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
 import {api} from "../../Services/api";
-import {toDepositReqType} from "../../Functions/changeToReqType";
+import {toDepositReqType, toWithdrawalReqType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
-import { FilterChangeEvent } from "../../Interfaces/DefaultTransactionsInterface";
+import {FilterChangeEvent} from "../../Interfaces/DefaultTransactionsInterface";
 import {currencies} from "../../Constants/Currencies";
 import {UsernameResponse} from "../../Interfaces/apiTypes";
 import {DepositStatus} from "../../Statuses/DepositStatus";
+import {AxiosResponse} from "axios";
+import {WithdrawalStatus} from "../../Statuses/WithdrawalStatus";
 
 const Form = (): ReactElement => {
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
     const [filter, setFilter] = useState<FilterInterface>(generateDefaultState(transaction))
 
     const clearFilters = (currType: TransactionType): void => {
-        setFilter(((prevState: FilterInterface): FilterInterface => {
-            const filterMarkup: FilterInterface = {
-                status: [],
-                id: '',
-                username: '',
-                currency: []
-            }
-
-            if (currType === 'deposit') return {...filterMarkup}
-            if (currType === 'withdrawal') return {...filterMarkup, isLocked: []}
-
-            return prevState
-        }))
+        setFilter(generateDefaultState(currType))
     }
 
     const handleFilterChange = (e: FilterChangeEvent): void => {
@@ -41,33 +31,47 @@ const Form = (): ReactElement => {
     }
 
     const handleRadioChange = (e: RadioChangeEvent): void => {
-        clearFilters(e.target.value as TransactionType)
-        setTransaction(e.target.value as TransactionType)
+        const event = e.target.value as TransactionType
+        clearFilters(event)
+        setTransaction(event)
     }
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
 
-        let resp
+        let resp, data: any = filter.username
+
+        if (filter.username) {
+            data = await api.getIdByUsername(filter.username)
+            data = data.data[0]
+        }
+
         if (transaction === 'deposit') {
-            let {data} = await api.getIdByUsername(filter.username)
             resp = await api.getDeposits(toDepositReqType(
                 {
                     status: filter.status as DepositStatus[],
                     id: filter.id,
-                    playerId: data[0].id,
+                    playerId: data,
                     currency: filter.currency
                 }
             ))
         }
         if (transaction === 'withdrawal') {
-            console.log('ha')
+            resp = await api.getWithdrawal(toWithdrawalReqType(
+                {
+                    status: filter.status as WithdrawalStatus[],
+                    id: filter.id,
+                    playerId: data,
+                    currency: filter.currency,
+                    isLocked: (filter as WithdrawalFilter).isLocked
+                }
+            ))
         }
 
         console.log(resp)
     }
 
-    return(
+    return (
         <form onSubmit={handleSubmit}>
             <RadioGroup
                 transaction={transaction}
@@ -78,16 +82,16 @@ const Form = (): ReactElement => {
                 handleFilterChange={handleFilterChange}
                 transaction={transaction}
             />
-                <Button
-                    onClick={() => clearFilters(transaction)}
-                    variant="contained"
-                    color="primary"
-                >
-                    CLEAR FILTERS
-                </Button>
-                <Button variant="contained" color="primary" type="submit">
-                    REFRESH
-                </Button>
+            <Button
+                onClick={() => clearFilters(transaction)}
+                variant="contained"
+                color="primary"
+            >
+                CLEAR Filters
+            </Button>
+            <Button variant="contained" color="primary" type="submit">
+                REFRESH
+            </Button>
         </form>
     )
 }
