@@ -7,8 +7,9 @@ import {PossibleColors, TransactionType} from "../../Interfaces/Types";
 
 const RadioGroup = ({transaction, handleRadioChange}: IComponentRadio): ReactElement => {
 
-    const currentTransactionType = (type: TransactionType, color: PossibleColors): PossibleColors | 'primary' => {
+    const bindColorToTransaction = (type: TransactionType, color: PossibleColors): PossibleColors | 'primary' => {
         if (transaction === type) return color
+
         return 'primary'
     }
 
@@ -20,7 +21,7 @@ const RadioGroup = ({transaction, handleRadioChange}: IComponentRadio): ReactEle
                     control={
                         <StyledRadio
                             value="deposit"
-                            customColor={currentTransactionType('deposit', 'crimson')}
+                            customColor={bindColorToTransaction('deposit', 'crimson')}
                         />
                     }
                     label="Deposit"
@@ -30,7 +31,7 @@ const RadioGroup = ({transaction, handleRadioChange}: IComponentRadio): ReactEle
                     control={
                         <StyledRadio
                             value="withdrawal"
-                            customColor={currentTransactionType('withdrawal', 'mediumseagreen')}
+                            customColor={bindColorToTransaction('withdrawal', 'mediumseagreen')}
                         />
                     }
                     label="Withdrawal"

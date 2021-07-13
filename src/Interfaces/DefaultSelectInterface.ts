@@ -5,5 +5,5 @@ export interface IComponentSelect extends DefaultTransactionsInterface {
     base: string[],
     selectState: string[],
     name?: string,
-    capital?: boolean
+    shouldCapital?: boolean
 }

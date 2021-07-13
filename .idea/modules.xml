@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../transaction_GraphQL_backend/.idea/transaction_GraphQL_backend.iml" filepath="$PROJECT_DIR$/../transaction_GraphQL_backend/.idea/transaction_GraphQL_backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/transactions.iml" filepath="$PROJECT_DIR$/.idea/transactions.iml" />
     </modules>
   </component>

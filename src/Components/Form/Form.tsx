@@ -6,7 +6,7 @@ import {TransactionType} from "../../Interfaces/Types";
 import {RadioChangeEvent} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
 import {api} from "../../Services/api";
-import {toDepositReqType, toWithdrawalReqType} from "../../Functions/changeToReqType";
+import {DepositPropsType, toDepositReqType, toWithdrawalReqType, WithdrawalPropsType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
 import {FilterChangeEvent} from "../../Interfaces/DefaultTransactionsInterface";
 import {currencies} from "../../Constants/Currencies";
@@ -39,36 +39,37 @@ const Form = (): ReactElement => {
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
 
-        let resp, data: any = filter.username
+        let response: unknown
+        let playerId: string = ''
 
         if (filter.username) {
-            data = await api.getIdByUsername(filter.username)
-            data = data.data[0]
+            playerId = (await api.getIdByUsername(filter.username)).data[0]?.id || ''
         }
 
         if (transaction === 'deposit') {
-            resp = await api.getDeposits(toDepositReqType(
+            response = await api.getDeposits(toDepositReqType(
                 {
                     status: filter.status as DepositStatus[],
                     id: filter.id,
-                    playerId: data,
-                    currency: filter.currency
+                    currency: filter.currency,
+                    playerId
                 }
             ))
         }
+
         if (transaction === 'withdrawal') {
-            resp = await api.getWithdrawal(toWithdrawalReqType(
+            response = await api.getWithdrawal(toWithdrawalReqType(
                 {
                     status: filter.status as WithdrawalStatus[],
                     id: filter.id,
-                    playerId: data,
+                    playerId,
                     currency: filter.currency,
                     isLocked: (filter as WithdrawalFilter).isLocked
                 }
             ))
         }
 
-        console.log(resp)
+        console.log(response)
     }
 
     return (

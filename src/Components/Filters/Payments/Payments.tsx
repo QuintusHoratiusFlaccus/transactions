@@ -57,7 +57,7 @@ const Payments = ({handleFilterChange, filterState, transaction}:IPayments): Rea
                 name="currency"
                 selectState={filterState.currency}
                 handleFilterChange={handleFilterChange}
-                capital={true}
+                shouldCapital={true}
             />
         </>
     )
