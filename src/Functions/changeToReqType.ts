@@ -1,65 +1,50 @@
 import {DepositFilter, WithdrawalFilter} from "../Interfaces/FilterInterface";
-import {isLocked} from "../Constants/isLocked";
 
 type ToReqProp<T> = Omit<T, 'username'> & {playerId: string}
-
-export type DepositPropsType = ToReqProp<DepositFilter>
-
-export type WithdrawalPropsType = ToReqProp<WithdrawalFilter>
-
-interface ClearedWithdrawalProps extends Pick<WithdrawalPropsType, 'status' | 'currency'>{
-    isLocked?: boolean,
-    playerId?: string,
-    id?: string
+type Partial<T> = {
+    [P in keyof T]?: T[P]
 }
 
-type WithdrawalMapType = { [v: string]: ClearedWithdrawalProps}
+export type DepositPropsType = ToReqProp<DepositFilter>
+export type WithdrawalPropsType = ToReqProp<WithdrawalFilter>
+type WithdrawalBooleanIsLocked = Omit<WithdrawalPropsType, 'isLocked'> & {isLocked?: boolean}
+type ClearedWithdrawalQuery = Partial<WithdrawalBooleanIsLocked>
+type ClearedDepositQuery = Partial<DepositPropsType>
+type ClearedProps = ClearedWithdrawalQuery | ClearedDepositQuery
 
-const buildQueryString = (props: DepositPropsType | WithdrawalMapType): string => {
-    let q = '?'
+const buildQueryString = (props: DepositPropsType | WithdrawalBooleanIsLocked): ClearedProps => {
+    let q = new Map()
 
     for (let [key, value] of Object.entries(props)) {
         if ((value && value.length > 0) || typeof value === "boolean") {
-            if (Array.isArray(value)) {
-                value.forEach((el) => {
-                    q += `${key}=${underscoreToSpace(el.toUpperCase())}&`
-                })
-            } else {
-                q += `${key}=${value}&`
-            }
+            q.set(key, value)
         }
     }
 
-    return q.slice(0, -1)
+    return Object.fromEntries(q)
 }
 
-const underscoreToSpace = (el: string): string => {
-    return el.replace(/ /g, '_')
-}
+const isLockedModify = (props: WithdrawalPropsType): WithdrawalBooleanIsLocked => {
+    const localObject: WithdrawalBooleanIsLocked = JSON.parse(JSON.stringify(props))
 
-const isLockedModify = (props: WithdrawalPropsType): WithdrawalMapType => {
-    const localMap = new Map()
-    for (const [key, value] of Object.entries(props)) {
-        if (key === 'isLocked') {
-            if (value.length === 1) {
-                if (value[0] === 'Locked') {
-                    localMap.set(key, false)
-                }
-                if (value[0] === 'Unlocked') {
-                    localMap.set(key, true)
-                }
-            }
-        } else if (value) {
-            localMap.set(key, value)
+    if (props.isLocked.length === 1) {
+        if (props.isLocked[0] === 'Locked') {
+            localObject.isLocked = true
         }
+        if (props.isLocked[0] === 'Unlocked') {
+            localObject.isLocked = false
+        }
+    } else {
+        delete localObject.isLocked
     }
-    return Object.fromEntries(localMap)
+
+    return localObject
 }
 
-export const toDepositReqType = (props: DepositPropsType): string => {
+export const toDepositReqType = (props: DepositPropsType): ClearedProps => {
     return buildQueryString(props)
 }
 
-export const toWithdrawalReqType = (props: WithdrawalPropsType): string => {
+export const toWithdrawalReqType = (props: WithdrawalPropsType): ClearedProps=> {
     return buildQueryString(isLockedModify(props))
 }

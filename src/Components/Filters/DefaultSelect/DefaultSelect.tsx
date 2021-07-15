@@ -13,7 +13,7 @@ const DefaultSelect = ({name, placeholder, base, selectState, handleFilterChange
                 value={selectState}
                 onChange={handleFilterChange as SelectProps['onChange']}
                 input={<Input />}
-                renderValue={(selected) => (selected as string[]).join(', ')}
+                renderValue={(selected) => (selected as string[]).length + ' item(s)'}
                 name={name ?? placeholder.toLowerCase()}
             >
                 {getArrayOfOptions({base, selectState, shouldCapital})}

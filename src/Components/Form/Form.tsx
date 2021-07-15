@@ -1,21 +1,26 @@
-import React, {ReactElement, SyntheticEvent, useState} from "react";
+import React, {ReactElement, SyntheticEvent, useEffect, useState} from "react";
 import RadioGroup from "../RadioGroup/RadioGroup";
 import {FilterInterface, WithdrawalFilter} from "../../Interfaces/FilterInterface";
 import {Button} from "@material-ui/core";
 import {TransactionType} from "../../Interfaces/Types";
 import {RadioChangeEvent} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
-import {api} from "../../Services/api";
 import {DepositPropsType, toDepositReqType, toWithdrawalReqType, WithdrawalPropsType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
 import {FilterChangeEvent} from "../../Interfaces/DefaultTransactionsInterface";
-import {currencies} from "../../Constants/Currencies";
-import {UsernameResponse} from "../../Interfaces/apiTypes";
 import {DepositStatus} from "../../Statuses/DepositStatus";
-import {AxiosResponse} from "axios";
 import {WithdrawalStatus} from "../../Statuses/WithdrawalStatus";
+import {useLazyQuery} from "@apollo/client";
+import {GET_USER} from "../../Queries/user";
+import {GET_WITHDRAWAL} from "../../Queries/withdrawal";
+import {GET_DEPOSIT} from "../../Queries/deposit";
 
 const Form = (): ReactElement => {
+    //queries
+    const [UserIdByName, {data: playerId}] = useLazyQuery(GET_USER)
+    const [Deposits, {data: depositsResp}] = useLazyQuery(GET_DEPOSIT)
+    const [Withdrawals, {data: withdrawalsResp}] = useLazyQuery(GET_WITHDRAWAL)
+    //states
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
     const [filter, setFilter] = useState<FilterInterface>(generateDefaultState(transaction))
 
@@ -36,40 +41,43 @@ const Form = (): ReactElement => {
         setTransaction(event)
     }
 
-    const handleSubmit = async (e: SyntheticEvent) => {
+    const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
 
-        let response: unknown
-        let playerId: string = ''
-
         if (filter.username) {
-            playerId = (await api.getIdByUsername(filter.username)).data[0]?.id || ''
+            UserIdByName({variables: {name: filter.username}})
         }
 
         if (transaction === 'deposit') {
-            response = await api.getDeposits(toDepositReqType(
+            Deposits(
                 {
-                    status: filter.status as DepositStatus[],
-                    id: filter.id,
-                    currency: filter.currency,
-                    playerId
+                variables: toDepositReqType(
+                    {
+                            status: filter.status as DepositStatus[],
+                            id: filter.id,
+                            currency: filter.currency,
+                            playerId: playerId?.UserIdByName?.id
+                        }
+                    )
                 }
-            ))
+            )
         }
 
         if (transaction === 'withdrawal') {
-            response = await api.getWithdrawal(toWithdrawalReqType(
+            Withdrawals(
                 {
-                    status: filter.status as WithdrawalStatus[],
-                    id: filter.id,
-                    playerId,
-                    currency: filter.currency,
-                    isLocked: (filter as WithdrawalFilter).isLocked
+                    variables: toWithdrawalReqType(
+                        {
+                            status: filter.status as WithdrawalStatus[],
+                            id: filter.id,
+                            playerId: playerId.UserIdByName?.id,
+                            currency: filter.currency,
+                            isLocked: (filter as WithdrawalFilter).isLocked
+                        }
+                    )
                 }
-            ))
+            )
         }
-
-        console.log(response)
     }
 
     return (

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.3.21",
     "@material-ui/core": "^4.11.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -13,6 +14,7 @@
     "@types/react-dom": "^17.0.8",
     "@types/styled-components": "^5.1.10",
     "axios": "^0.21.1",
+    "graphql": "^15.5.1",
     "json-server": "^0.16.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -22,11 +24,12 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start && codegen",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "json-server --watch src/Database/db.json --port 3001"
+    "server": "json-server --watch src/Database/db.json --port 3001",
+    "codegen": "npx apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql  --includes=C:/projects/transactions/src/Queries/*.ts --outputFlat ./generated.tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -45,5 +48,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "apollo": "^2.33.4"
   }
 }

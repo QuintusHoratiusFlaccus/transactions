@@ -14,9 +14,9 @@ export const getArrayOfOptions = ({base, selectState, shouldCapital}:getArrayOfO
         return (
             <MenuItem
                 key={`${mutableEl}_key`}
-                value={mutableEl}
+                value={el}
             >
-                <Checkbox checked={selectState.indexOf(mutableEl) > -1} />
+                <Checkbox checked={selectState.indexOf(el) > -1} />
                 <ListItemText primary={mutableEl} />
             </MenuItem>
         )
