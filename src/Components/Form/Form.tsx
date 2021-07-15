@@ -5,7 +5,7 @@ import {Button} from "@material-ui/core";
 import {TransactionType} from "../../Interfaces/Types";
 import {RadioChangeEvent} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
-import {DepositPropsType, toDepositReqType, toWithdrawalReqType, WithdrawalPropsType} from "../../Functions/changeToReqType";
+import {toDepositReqType, toWithdrawalReqType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
 import {FilterChangeEvent} from "../../Interfaces/DefaultTransactionsInterface";
 import {DepositStatus} from "../../Statuses/DepositStatus";
@@ -14,6 +14,7 @@ import {useLazyQuery} from "@apollo/client";
 import {GET_USER} from "../../Queries/user";
 import {GET_WITHDRAWAL} from "../../Queries/withdrawal";
 import {GET_DEPOSIT} from "../../Queries/deposit";
+import useDebounce from "../../Hooks/useDebounce";
 
 const Form = (): ReactElement => {
     //queries
@@ -23,6 +24,7 @@ const Form = (): ReactElement => {
     //states
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
     const [filter, setFilter] = useState<FilterInterface>(generateDefaultState(transaction))
+    const debouncedValue: string = useDebounce(filter.username, 1000)
 
     const clearFilters = (currType: TransactionType): void => {
         setFilter(generateDefaultState(currType))
@@ -44,9 +46,7 @@ const Form = (): ReactElement => {
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
 
-        if (filter.username) {
-            UserIdByName({variables: {name: filter.username}})
-        }
+
 
         if (transaction === 'deposit') {
             Deposits(
@@ -80,6 +80,12 @@ const Form = (): ReactElement => {
         }
     }
 
+    useEffect(() => {
+        if(debouncedValue) {
+            UserIdByName({variables: {name: debouncedValue}})
+        }
+    }, [debouncedValue])
+
     return (
         <form onSubmit={handleSubmit}>
             <RadioGroup
@@ -104,5 +110,11 @@ const Form = (): ReactElement => {
         </form>
     )
 }
+
+// export default compose(
+//     graphql(GET_USER, {name: 'userData'}),
+//     graphql(GET_DEPOSIT, {name: 'depositData', options: ({playerId: {playerId}}) => ({variables: {playerId}}) }),
+//     graphql(GET_WITHDRAWAL, {name: 'withdrawalData', options: ({playerId: {playerId}}) => ({variables: {playerId}}) })
+// )(Form)
 
 export default Form
