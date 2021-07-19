@@ -1,12 +1,3 @@
-export enum WithdrawalStatus {
-    Initiated = 'INITIATED',
-    Failed = 'FAILED',
-    InProgress = 'IN_PROGRESS',
-    Cancelled = 'CANCELLED',
-    Pending = 'PENDING',
-    Declined = 'DECLINED',
-    Processing = 'PROCESSING',
-    Confirmed = 'CONFIRMED'
-}
+import {WithdrawalStatus} from "../generated";
 
 export const WithdrawalStatusValues = Object.values(WithdrawalStatus)

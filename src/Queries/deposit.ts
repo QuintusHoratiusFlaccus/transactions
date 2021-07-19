@@ -1,16 +1,10 @@
 import { gql } from "@apollo/client";
 export const GET_DEPOSIT = gql`
     query GetDeposits(
-        $status: [String!]
-        $id: ID,
-        $playerId: ID,
-        $currency: [String!]
+        $filter: DepositFilters
     ) {
         Deposits(
-            status: $status,
-            id: $id,
-            playerId: $playerId,
-            currency: $currency
+            filter: $filter
         ) {
             status
             id

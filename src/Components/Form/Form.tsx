@@ -1,4 +1,4 @@
-import React, {ReactElement, SyntheticEvent, useEffect, useState} from "react";
+import React, {ReactElement, SyntheticEvent, useState} from "react";
 import RadioGroup from "../RadioGroup/RadioGroup";
 import {FilterInterface, WithdrawalFilter} from "../../Interfaces/FilterInterface";
 import {Button} from "@material-ui/core";
@@ -8,13 +8,13 @@ import Payments from "../Filters/Payments/Payments";
 import {toDepositReqType, toWithdrawalReqType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
 import {FilterChangeEvent} from "../../Interfaces/DefaultTransactionsInterface";
-import {DepositStatus} from "../../Statuses/DepositStatus";
-import {WithdrawalStatus} from "../../Statuses/WithdrawalStatus";
-import {useLazyQuery} from "@apollo/client";
-import {GET_USER} from "../../Queries/user";
-import {GET_WITHDRAWAL} from "../../Queries/withdrawal";
-import {GET_DEPOSIT} from "../../Queries/deposit";
-import useDebounce from "../../Hooks/useDebounce";
+import {
+    DepositStatus, GetDepositsQueryVariables, GetWithdrawalsQueryVariables,
+    useGetDepositsLazyQuery,
+    useGetUserIdByNameLazyQuery,
+    useGetWithdrawalsLazyQuery
+} from "../../generated";
+import {WithdrawalStatus} from "../../generated";
 
 const Form = (): ReactElement => {
     //queries

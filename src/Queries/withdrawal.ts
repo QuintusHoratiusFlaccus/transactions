@@ -9,11 +9,7 @@ export const GET_WITHDRAWAL = gql`
         $isLocked: Boolean
     ) {
         Withdrawals(
-            status: $status,
-            id: $id,
-            playerId: $playerId,
-            currency: $currency,
-            isLocked: $isLocked
+            filter: $filter
         ) {
             status
             id

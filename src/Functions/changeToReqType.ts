@@ -1,16 +1,17 @@
 import {DepositFilter, WithdrawalFilter} from "../Interfaces/FilterInterface";
+import {DepositFilters, GetDepositsQueryVariables, GetWithdrawalsQueryVariables, WithdrawalFilters} from "../generated";
 
-type ToReqProp<T> = Omit<T, 'username'> & {playerId: string}
-type Partial<T> = {
-    [P in keyof T]?: T[P]
-}
+type ToReqProp<T> = Omit<T, 'username'> & {playerId?: string | undefined}
+// type Partial<T> = {
+//     [P in keyof T]?: T[P]
+// }
 
 export type DepositPropsType = ToReqProp<DepositFilter>
 export type WithdrawalPropsType = ToReqProp<WithdrawalFilter>
 type WithdrawalBooleanIsLocked = Omit<WithdrawalPropsType, 'isLocked'> & {isLocked?: boolean}
-type ClearedWithdrawalQuery = Partial<WithdrawalBooleanIsLocked>
-type ClearedDepositQuery = Partial<DepositPropsType>
-type ClearedProps = ClearedWithdrawalQuery | ClearedDepositQuery
+// type ClearedWithdrawalQuery = Partial<WithdrawalBooleanIsLocked>
+// type ClearedDepositQuery = Partial<DepositPropsType>
+type ClearedProps = WithdrawalFilters | DepositFilters
 
 const buildQueryString = (props: DepositPropsType | WithdrawalBooleanIsLocked): ClearedProps => {
     let q = new Map()
@@ -21,6 +22,7 @@ const buildQueryString = (props: DepositPropsType | WithdrawalBooleanIsLocked): 
         }
     }
 
+    // console.log(Object.fromEntries(q))
     return Object.fromEntries(q)
 }
 
@@ -41,10 +43,10 @@ const isLockedModify = (props: WithdrawalPropsType): WithdrawalBooleanIsLocked =
     return localObject
 }
 
-export const toDepositReqType = (props: DepositPropsType): ClearedProps => {
-    return buildQueryString(props)
+export const toDepositReqType = (props: DepositPropsType): DepositFilters => {
+    return buildQueryString(props) as DepositFilters
 }
 
-export const toWithdrawalReqType = (props: WithdrawalPropsType): ClearedProps=> {
-    return buildQueryString(isLockedModify(props))
+export const toWithdrawalReqType = (props: WithdrawalPropsType): WithdrawalFilters => {
+    return buildQueryString(isLockedModify(props)) as WithdrawalFilters
 }

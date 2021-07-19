@@ -7,7 +7,6 @@ import {isLocked} from "../../../Constants/isLocked";
 import {IPayments} from "../../../Interfaces/Payments";
 import {ReactElement} from "react";
 import { WithdrawalFilter } from "../../../Interfaces/FilterInterface";
-import { SituationalValue } from "../../../Interfaces/Types";
 
 const Payments = ({handleFilterChange, filterState, transaction}:IPayments): ReactElement => {
     const isDeposit = transaction === 'deposit'
