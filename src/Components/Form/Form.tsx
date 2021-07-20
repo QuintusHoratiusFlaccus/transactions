@@ -17,14 +17,50 @@ import {
 import {WithdrawalStatus} from "../../generated";
 
 const Form = (): ReactElement => {
+    const getTransactions = (userId?: string | null): void => {
+        if (transaction === 'deposit') {
+            getDeposits(
+                {
+                    variables: {filter: toDepositReqType({
+                                status: filter.status as DepositStatus[],
+                                id: filter.id,
+                                currency: filter.currency,
+                                ...(userId && { playerId: userId }),
+                    })}
+                }
+            )
+
+            return;
+        }
+
+        getWithdrawals(
+            {
+                variables: { filter: toWithdrawalReqType({
+                            status: filter.status as WithdrawalStatus[],
+                            id: filter.id,
+                            currency: filter.currency,
+                            isLocked:(filter as WithdrawalFilter).isLocked,
+                            ...(userId && {playerId: userId}),
+                })}
+            }
+        )
+    }
+
     //queries
-    const [UserIdByName, {data: playerId}] = useLazyQuery(GET_USER)
-    const [Deposits, {data: depositsResp}] = useLazyQuery(GET_DEPOSIT)
-    const [Withdrawals, {data: withdrawalsResp}] = useLazyQuery(GET_WITHDRAWAL)
+    const [getUserIdByName] = useGetUserIdByNameLazyQuery({ onCompleted: (data) => {
+        const userId = data.UserIdByName?.id;
+
+        getTransactions(userId);
+    } })
+    const [getDeposits] = useGetDepositsLazyQuery({ onCompleted: (data) => {
+        console.log('--->>> data <<<---', data);
+        } })
+    const [getWithdrawals] = useGetWithdrawalsLazyQuery({ onCompleted: (data) => {
+            console.log('--->>> data <<<---', data);
+        } })
     //states
     const [transaction, setTransaction] = useState<TransactionType>('deposit')
     const [filter, setFilter] = useState<FilterInterface>(generateDefaultState(transaction))
-    const debouncedValue: string = useDebounce(filter.username, 1000)
 
     const clearFilters = (currType: TransactionType): void => {
         setFilter(generateDefaultState(currType))
@@ -46,45 +82,14 @@ const Form = (): ReactElement => {
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
 
+        if (filter.username) {
+            getUserIdByName({ variables: { name: filter.username } });
 
-
-        if (transaction === 'deposit') {
-            Deposits(
-                {
-                variables: toDepositReqType(
-                    {
-                            status: filter.status as DepositStatus[],
-                            id: filter.id,
-                            currency: filter.currency,
-                            playerId: playerId?.UserIdByName?.id
-                        }
-                    )
-                }
-            )
+            return;
         }
 
-        if (transaction === 'withdrawal') {
-            Withdrawals(
-                {
-                    variables: toWithdrawalReqType(
-                        {
-                            status: filter.status as WithdrawalStatus[],
-                            id: filter.id,
-                            playerId: playerId.UserIdByName?.id,
-                            currency: filter.currency,
-                            isLocked: (filter as WithdrawalFilter).isLocked
-                        }
-                    )
-                }
-            )
-        }
+        getTransactions();
     }
-
-    useEffect(() => {
-        if(debouncedValue) {
-            UserIdByName({variables: {name: debouncedValue}})
-        }
-    }, [debouncedValue])
 
     return (
         <form onSubmit={handleSubmit}>
