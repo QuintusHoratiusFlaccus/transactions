@@ -5,7 +5,6 @@ import {PossibleColors, TransactionType} from "../../Interfaces/Types";
 import { Styled } from './StyledConnector';
 
 const RadioGroup = ({transaction, handleRadioChange}: IComponentRadio): ReactElement => {
-
     const bindColorToTransaction = (type: TransactionType, color: PossibleColors): PossibleColors | 'primary' => {
         if (transaction === type) return color
 
