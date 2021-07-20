@@ -7,14 +7,14 @@ import {RadioChangeEvent} from "../../Interfaces/RadioInterface";
 import Payments from "../Filters/Payments/Payments";
 import {toDepositReqType, toWithdrawalReqType} from "../../Functions/changeToReqType";
 import {generateDefaultState} from "../../Functions/generateDefaultState";
-import {FilterChangeEvent} from "../../Interfaces/DefaultTransactionsInterface";
+import {FilterChangeEvent} from "../../Interfaces/TransactionsInterface";
 import {
-    DepositStatus, GetDepositsQueryVariables, GetWithdrawalsQueryVariables,
+    DepositStatus,
+    WithdrawalStatus,
     useGetDepositsLazyQuery,
     useGetUserIdByNameLazyQuery,
     useGetWithdrawalsLazyQuery
 } from "../../generated";
-import {WithdrawalStatus} from "../../generated";
 
 const Form = (): ReactElement => {
     const getTransactions = (userId?: string | null): void => {
@@ -115,11 +115,5 @@ const Form = (): ReactElement => {
         </form>
     )
 }
-
-// export default compose(
-//     graphql(GET_USER, {name: 'userData'}),
-//     graphql(GET_DEPOSIT, {name: 'depositData', options: ({playerId: {playerId}}) => ({variables: {playerId}}) }),
-//     graphql(GET_WITHDRAWAL, {name: 'withdrawalData', options: ({playerId: {playerId}}) => ({variables: {playerId}}) })
-// )(Form)
 
 export default Form

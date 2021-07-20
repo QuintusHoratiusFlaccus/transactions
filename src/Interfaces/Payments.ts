@@ -1,8 +1,8 @@
-import {DefaultTransactionsInterface} from "./DefaultTransactionsInterface";
+import {TransactionsInterface} from "./TransactionsInterface";
 import {FilterInterface} from "./FilterInterface";
 import {TransactionType} from "./Types";
 
-export interface IPayments extends DefaultTransactionsInterface {
+export interface PaymentsPropsInterface extends TransactionsInterface {
     filterState: FilterInterface,
     transaction: TransactionType
 }

@@ -1,8 +1,12 @@
-import { Checkbox, ListItemText, MenuItem } from "@material-ui/core"
-import {getArrayOfOptionsInterface} from "../../../Interfaces/getArrayOfOptionsInterface";
+import {
+    Checkbox as MiuCheckbox,
+    ListItemText as MuiListItemText,
+    MenuItem as MuiMenuItem
+} from "@material-ui/core"
+import {ArrayOfOptionsPropsInterface} from "../../../Interfaces/ArrayOfOptionsPropsInterface";
 import {ReactElement} from "react";
 
-export const getArrayOfOptions = ({base, selectState, shouldCapital}:getArrayOfOptionsInterface): ReactElement[] => {
+export const getArrayOfOptions = ({base, selectState, shouldCapital}:ArrayOfOptionsPropsInterface): ReactElement[] => {
     return base.map((el: string) => {
 
         let mutableEl: string = el
@@ -12,13 +16,13 @@ export const getArrayOfOptions = ({base, selectState, shouldCapital}:getArrayOfO
         mutableEl = mutableEl.replace(/_/g, ' ')
 
         return (
-            <MenuItem
+            <MuiMenuItem
                 key={`${mutableEl}_key`}
                 value={el}
             >
-                <Checkbox checked={selectState.indexOf(el) > -1} />
-                <ListItemText primary={mutableEl} />
-            </MenuItem>
+                <MiuCheckbox checked={selectState.indexOf(el) > -1} />
+                <MuiListItemText primary={mutableEl} />
+            </MuiMenuItem>
         )
     })
 }

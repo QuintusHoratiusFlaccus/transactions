@@ -43,8 +43,8 @@ export enum DepositStatus {
 export type Query = {
   __typename?: 'Query';
   UserIdByName?: Maybe<User>;
-  Withdrawals: Array<Maybe<Withdrawal>>;
-  Deposits: Array<Maybe<Deposit>>;
+  Withdrawals: Array<Withdrawal>;
+  Deposits: Array<Deposit>;
 };
 
 
@@ -70,11 +70,11 @@ export type User = {
 
 export type Withdrawal = {
   __typename?: 'Withdrawal';
-  id?: Maybe<Scalars['ID']>;
-  playerId?: Maybe<Scalars['ID']>;
-  status?: Maybe<WithdrawalStatus>;
-  currency?: Maybe<Scalars['String']>;
-  isLocked?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  playerId: Scalars['ID'];
+  status: WithdrawalStatus;
+  currency: Scalars['String'];
+  isLocked: Scalars['Boolean'];
 };
 
 export type WithdrawalFilters = {
@@ -103,10 +103,10 @@ export type GetDepositsQueryVariables = Exact<{
 
 export type GetDepositsQuery = (
   { __typename?: 'Query' }
-  & { Deposits: Array<Maybe<(
+  & { Deposits: Array<(
     { __typename?: 'Deposit' }
     & Pick<Deposit, 'status' | 'id' | 'playerId' | 'currency'>
-  )>> }
+  )> }
 );
 
 export type GetUserIdByNameQueryVariables = Exact<{
@@ -129,10 +129,10 @@ export type GetWithdrawalsQueryVariables = Exact<{
 
 export type GetWithdrawalsQuery = (
   { __typename?: 'Query' }
-  & { Withdrawals: Array<Maybe<(
+  & { Withdrawals: Array<(
     { __typename?: 'Withdrawal' }
     & Pick<Withdrawal, 'status' | 'id' | 'playerId' | 'currency' | 'isLocked'>
-  )>> }
+  )> }
 );
 
 
@@ -254,8 +254,8 @@ export type DepositResolvers<ContextType = any, ParentType extends ResolversPare
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   UserIdByName?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserIdByNameArgs, 'name'>>;
-  Withdrawals?: Resolver<Array<Maybe<ResolversTypes['Withdrawal']>>, ParentType, ContextType, RequireFields<QueryWithdrawalsArgs, never>>;
-  Deposits?: Resolver<Array<Maybe<ResolversTypes['Deposit']>>, ParentType, ContextType, RequireFields<QueryDepositsArgs, never>>;
+  Withdrawals?: Resolver<Array<ResolversTypes['Withdrawal']>, ParentType, ContextType, RequireFields<QueryWithdrawalsArgs, never>>;
+  Deposits?: Resolver<Array<ResolversTypes['Deposit']>, ParentType, ContextType, RequireFields<QueryDepositsArgs, never>>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -265,11 +265,11 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type WithdrawalResolvers<ContextType = any, ParentType extends ResolversParentTypes['Withdrawal'] = ResolversParentTypes['Withdrawal']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  playerId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  status?: Resolver<Maybe<ResolversTypes['WithdrawalStatus']>, ParentType, ContextType>;
-  currency?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isLocked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  playerId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['WithdrawalStatus'], ParentType, ContextType>;
+  currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isLocked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

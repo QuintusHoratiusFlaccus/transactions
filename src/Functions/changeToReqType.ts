@@ -1,16 +1,11 @@
 import {DepositFilter, WithdrawalFilter} from "../Interfaces/FilterInterface";
-import {DepositFilters, GetDepositsQueryVariables, GetWithdrawalsQueryVariables, WithdrawalFilters} from "../generated";
+import {DepositFilters, WithdrawalFilters} from "../generated";
 
 type ToReqProp<T> = Omit<T, 'username'> & {playerId?: string | undefined}
-// type Partial<T> = {
-//     [P in keyof T]?: T[P]
-// }
 
 export type DepositPropsType = ToReqProp<DepositFilter>
 export type WithdrawalPropsType = ToReqProp<WithdrawalFilter>
 type WithdrawalBooleanIsLocked = Omit<WithdrawalPropsType, 'isLocked'> & {isLocked?: boolean}
-// type ClearedWithdrawalQuery = Partial<WithdrawalBooleanIsLocked>
-// type ClearedDepositQuery = Partial<DepositPropsType>
 type ClearedProps = WithdrawalFilters | DepositFilters
 
 const buildQueryString = (props: DepositPropsType | WithdrawalBooleanIsLocked): ClearedProps => {
@@ -22,7 +17,6 @@ const buildQueryString = (props: DepositPropsType | WithdrawalBooleanIsLocked): 
         }
     }
 
-    // console.log(Object.fromEntries(q))
     return Object.fromEntries(q)
 }
 

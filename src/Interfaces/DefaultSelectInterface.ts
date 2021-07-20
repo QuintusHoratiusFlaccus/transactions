@@ -1,6 +1,6 @@
-import {DefaultTransactionsInterface} from "./DefaultTransactionsInterface";
+import {TransactionsInterface} from "./TransactionsInterface";
 
-export interface IComponentSelect extends DefaultTransactionsInterface {
+export interface SelectPropsInterface extends TransactionsInterface {
     placeholder: string,
     base: string[],
     selectState: string[],

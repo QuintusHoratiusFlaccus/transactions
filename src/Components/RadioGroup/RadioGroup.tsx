@@ -1,9 +1,8 @@
 import React, {ReactElement} from 'react';
-import {StyledRadio} from './StyledRadio';
-import {FormControl, FormControlLabel} from "@material-ui/core";
-import {MUIRadioGroup} from './MUIRadioGroup';
+import {FormControl as MuiFormControl, FormControlLabel as MuiFormControlLabel} from "@material-ui/core";
 import {IComponentRadio} from "../../Interfaces/RadioInterface";
 import {PossibleColors, TransactionType} from "../../Interfaces/Types";
+import { Styled } from './StyledConnector';
 
 const RadioGroup = ({transaction, handleRadioChange}: IComponentRadio): ReactElement => {
 
@@ -14,30 +13,30 @@ const RadioGroup = ({transaction, handleRadioChange}: IComponentRadio): ReactEle
     }
 
     return (
-        <FormControl>
-            <MUIRadioGroup value={transaction} onChange={handleRadioChange}>
-                <FormControlLabel
+        <MuiFormControl>
+            <Styled.RadioGroup value={transaction} onChange={handleRadioChange}>
+                <MuiFormControlLabel
                     value="deposit"
                     control={
-                        <StyledRadio
+                        <Styled.Radio
                             value="deposit"
                             customColor={bindColorToTransaction('deposit', 'crimson')}
                         />
                     }
                     label="Deposit"
                 />
-                <FormControlLabel
+                <MuiFormControlLabel
                     value="withdrawal"
                     control={
-                        <StyledRadio
+                        <Styled.Radio
                             value="withdrawal"
                             customColor={bindColorToTransaction('withdrawal', 'mediumseagreen')}
                         />
                     }
                     label="Withdrawal"
                 />
-            </MUIRadioGroup>
-        </FormControl>
+            </Styled.RadioGroup>
+        </MuiFormControl>
     );
 }
 
